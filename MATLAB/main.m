@@ -1,5 +1,5 @@
 % Select your device
-device ='COM7'; 
+device ='COM3'; 
 
 
 % Set up parameters
@@ -9,7 +9,7 @@ sampels = 10;
 % Connect with Unicorn 
 s = UnicornConnect(device, timeout);
 
-% Get Data
+%% Get Data
 % EEG (8), accelerometer (3), gyroscope (3), battery (1), and counter (1)
 data = UnicornGetData(sampels, s);
 
@@ -20,5 +20,9 @@ data = UnicornGetData(sampels, s);
 % .
 % .
 
-% Stop data acquesition
-unicornStopAcq(s);
+%% Stop data acquesition
+% UNICORN Bluetooth commands
+stop_acq =          [0x63, 0x5C, 0xC5]';
+
+fwrite(s, stop_acq);
+clear s;
