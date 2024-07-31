@@ -3,14 +3,16 @@ device ='COM3';
 
 
 % Set up parameters
-timeout = 5;
-sampels = 10;
+timeout = 5; % wait until UNICORN response
+fs = 250; % sampling rate UNICORN
+recTime = 2; % in seconds
+sampels = fs * recTime;
 
 % Connect with Unicorn 
 s = UnicornConnect(device, timeout);
 
 %% Get Data
-% EEG (8), accelerometer (3), gyroscope (3), battery (1), and counter (1)
+% EEG/µV (8), accelerometer xyz /g (3), gyroscope xyz / (°/s) (3), battery / % (1), and counter (1)
 data = UnicornGetData(sampels, s);
 
 
