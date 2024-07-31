@@ -1,5 +1,5 @@
 # UNICORNConnect
-Connect with EEG System UNICORN from g.tec. Other software is not required.
+UNICORNConnect enables direct connection and data acquisition from the g.tec's UNICORN EEG System using MATLAB or Python, without the need for any additional software.
 
 ## UNICORN MATLAB Program
 
