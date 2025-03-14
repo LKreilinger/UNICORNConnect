@@ -1,5 +1,7 @@
 # UNICORNConnect
 UNICORNConnect enables direct connection and data acquisition from the g.tec's UNICORN EEG System using MATLAB or Python, without the need for any additional software.
+To check payload conversion, see pdf
+https://github.com/unicorn-bi/Unicorn-Suite-Hybrid-Black/blob/master/Unicorn%20Bluetooth%20Protocol/UnicornBluetoothProtocol.pdf
 
 ## UNICORN MATLAB Program
 
