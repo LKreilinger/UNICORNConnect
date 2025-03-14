@@ -1,11 +1,12 @@
 % Select your device
-device ='COM3'; 
+device ='COM9'; 
 
 
 % Set up parameters
+recTime = 120; % in seconds
+
 timeout = 5; % wait until UNICORN response
 fs = 250; % sampling rate UNICORN
-recTime = 2; % in seconds
 sampels = fs * recTime;
 
 % Connect with Unicorn 
