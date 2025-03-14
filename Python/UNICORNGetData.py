@@ -64,4 +64,4 @@ def UNICORNGetData(ser, samples):
 
         data[sample, :] = np.concatenate([eeg, accel, gyro, [battery], [counter]])
 
-        return data
+    return data
