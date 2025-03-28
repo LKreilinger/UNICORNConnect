@@ -18,7 +18,9 @@ This MATLAB program allows you to connect to your g.tec UNICORN device, acquire 
 ## UNICORN Python Program
 
 This Python script communicates with your g.tec UNICORN device through a serial interface. 
-
+1. Install requirements
+```sh
+pip install -r requirements.txt
 1. Set up the device's COM port, timeout, number of samples, and number of channels.
 2. Use Python's serial library to connect to the UNICORN device.
 3. Start data acquisition with the start_acq command.
