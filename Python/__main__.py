@@ -12,9 +12,12 @@ if __name__ == '__main__':
     fs = 250 # sampling rate UNICORN
     samples = fs * recTime
 
+    # Connect with Unicorn 
     unicorn_device = UNICORNDevice(device, timeout)
     unicorn_device.connect()
     ser = unicorn_device.serial_conn()
 
+    # Get data
+    # EEG/µV (8), accelerometer xyz /g (3), gyroscope xyz / (°/s) (3), battery / % (1), and counter (1)
     data = UNICORNGetData(ser, samples)
-    a=1
+    
