@@ -1,4 +1,6 @@
 # UNICORNConnect
+[![DOI](https://zenodo.org/badge/823541940.svg)](https://doi.org/10.5281/zenodo.23213189)
+
 UNICORNConnect enables direct connection and data acquisition from the g.tec's UNICORN EEG System using MATLAB or Python, without the need for any additional software.
 To check payload conversion, see pdf
 https://github.com/unicorn-bi/Unicorn-Suite-Hybrid-Black/blob/master/Unicorn%20Bluetooth%20Protocol/UnicornBluetoothProtocol.pdf
@@ -65,15 +67,18 @@ This is an independent project. It is not affiliated with, endorsed by, or suppo
 
 If you use UNICORNConnect in your work, please cite it. GitHub offers a ready-made reference under "Cite this repository" (generated from [CITATION.cff](CITATION.cff)). For example:
 
-> Kreilinger, L. UNICORNConnect [Computer software]. https://github.com/LKreilinger/UNICORNConnect
+> Kreilinger, L. UNICORNConnect [Computer software]. https://doi.org/10.5281/zenodo.23213189
 
 ```bibtex
 @software{kreilinger_unicornconnect,
   author = {Kreilinger, Laurens},
   title  = {UNICORNConnect},
+  doi    = {10.5281/zenodo.23213189},
   url    = {https://github.com/LKreilinger/UNICORNConnect}
 }
 ```
+
+The DOI above always points to the latest release. To cite exactly version 1.0.0, use https://doi.org/10.5281/zenodo.23213190.
 
 ## License
 

@@ -10,3 +10,11 @@ repository-code: "https://github.com/LKreilinger/UNICORNConnect"
 url: "https://github.com/LKreilinger/UNICORNConnect"
 license: Apache-2.0
 version: 1.0.0
+doi: 10.5281/zenodo.23213189
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23213189
+    description: "All versions (always resolves to the latest release)"
+  - type: doi
+    value: 10.5281/zenodo.23213190
+    description: "Version 1.0.0"
