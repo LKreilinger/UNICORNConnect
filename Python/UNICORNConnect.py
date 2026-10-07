@@ -6,6 +6,7 @@ class UNICORNDevice:
         self.timeout = timeout
         self.start_acq = [0x61, 0x7C, 0x87]
         self.start_response = [0x00, 0x00, 0x00]
+        self.stop_acq = [0x63, 0x5C, 0xC5]
         self._ser = None  # Use _ prefix to indicate it should not be accessed directly
 
     def connect(self):
@@ -19,11 +20,23 @@ class UNICORNDevice:
         if payload == bytearray(self.start_response):
             print('Connection with Unicorn successful!')
         else:
+            self._ser.close()
+            self._ser = None
             raise Exception(f'Unsuccessful start data stream on port: {self.device}')
-            
+
 
     def serial_conn(self):
         # Method to access the serial port object
         if self._ser is None:
             raise Exception('Device not yet connected. Use connect() method first.')
         return self._ser
+
+    def disconnect(self):
+        # Method to stop the data acquisition and close the serial port
+        if self._ser is None:
+            return
+        try:
+            self._ser.write(bytearray(self.stop_acq))
+        finally:
+            self._ser.close()
+            self._ser = None

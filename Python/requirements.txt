@@ -1,2 +1,2 @@
-numpy==1.26.3
-pyserial==3.5
+numpy>=1.26
+pyserial>=3.5
