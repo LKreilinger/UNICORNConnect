@@ -61,6 +61,20 @@ Both programs return a matrix with one row per sample (250 samples per second) a
 
 This is an independent project. It is not affiliated with, endorsed by, or supported by g.tec medical engineering GmbH. "Unicorn" and "g.tec" are trademarks of their respective owners. The software is provided as is, without warranty, and is not a medical device.
 
+## Citation
+
+If you use UNICORNConnect in your work, please cite it. GitHub offers a ready-made reference under "Cite this repository" (generated from [CITATION.cff](CITATION.cff)). For example:
+
+> Kreilinger, L. UNICORNConnect [Computer software]. https://github.com/LKreilinger/UNICORNConnect
+
+```bibtex
+@software{kreilinger_unicornconnect,
+  author = {Kreilinger, Laurens},
+  title  = {UNICORNConnect},
+  url    = {https://github.com/LKreilinger/UNICORNConnect}
+}
+```
+
 ## License
 
 Apache License 2.0, see [LICENSE](LICENSE).

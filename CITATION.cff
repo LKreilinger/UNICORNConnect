@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "UNICORNConnect"
+abstract: "Direct connection and data acquisition from the g.tec UNICORN EEG system using MATLAB or Python, without additional software."
+authors:
+  - family-names: "Kreilinger"
+    given-names: "Laurens"
+repository-code: "https://github.com/LKreilinger/UNICORNConnect"
+url: "https://github.com/LKreilinger/UNICORNConnect"
+license: Apache-2.0
+version: 1.0.0
