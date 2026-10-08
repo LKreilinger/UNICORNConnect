@@ -22,16 +22,10 @@ stop_sequence =     [0x0D, 0x0A]';
 data = zeros(sampels, nchan);
 accel = zeros(1,3);
 gyro = zeros(1,3);
+last_counter = [];
 for sampel=1:sampels
 
-    payload = fread(s, 45, 'uint8');
-
-    if ~isequal(payload(1:2), start_sequence)
-        error('Invalid packet');
-    end
-    if ~isequal(payload(44:45), stop_sequence)
-        error('Invalid packet');
-    end
+    payload = readPacket(s, start_sequence, stop_sequence);
 
     battery = 100 * bitand(payload(3), 15) / 15;
 
@@ -79,7 +73,42 @@ for sampel=1:sampels
     % Counter Calculation
     counter = payload(40) + payload(41) * 256 + payload(42) * 65536 + payload(43) * 16777216;
 
+    % Lost packets are visible as a jump in the counter
+    if ~isempty(last_counter) && counter ~= last_counter + 1
+        warning('%d sample(s) lost before counter %d', counter - last_counter - 1, counter);
+    end
+    last_counter = counter;
+
     % Combine the values into 'data'
     data(sampel,:) = [eeg, accel, gyro, battery, counter];
 
+end
+end
+
+function payload = readPacket(s, start_sequence, stop_sequence)
+% Read the next valid packet. If the stream is out of sync, skip bytes
+% until a packet with a correct start and stop sequence is found.
+payload = fread(s, 45, 'uint8');
+payload = payload(:);
+while true
+    if numel(payload) < 45
+        error('Timeout: no data from UNICORN');
+    end
+    if isequal(payload(1:2), start_sequence) && isequal(payload(44:45), stop_sequence)
+        return;
+    end
+    % Continue at the next possible start sequence
+    start = find(payload(2:44) == start_sequence(1) & payload(3:45) == start_sequence(2), 1) + 1;
+    if isempty(start)
+        % keep the last byte if it could be the first start byte
+        if payload(45) == start_sequence(1)
+            start = 45;
+        else
+            start = 46;
+        end
+    end
+    payload = payload(start:end);
+    new_bytes = fread(s, 45 - numel(payload), 'uint8');
+    payload = [payload; new_bytes(:)];
+end
 end

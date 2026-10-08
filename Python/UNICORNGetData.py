@@ -1,3 +1,5 @@
+import warnings
+
 import numpy as np
 from UNICORNConnect import UNICORNDevice
 
@@ -22,29 +24,43 @@ def gyro_calculation(payload, index):
     return gyro
 
 
+def read_packet(ser, start_sequence, stop_sequence):
+    # Read the next valid packet. If the stream is out of sync, skip bytes
+    # until a packet with a correct start and stop sequence is found.
+    payload = bytearray(ser.read(45))
+    while True:
+        if len(payload) < 45:
+            raise Exception("Timeout: no data from UNICORN")
+        if payload[0:2] == start_sequence and payload[43:45] == stop_sequence:
+            return payload
+        # Continue at the next possible start sequence
+        start = payload.find(start_sequence, 1)
+        if start == -1:
+            # keep the last byte if it could be the first start byte
+            start = 44 if payload[44] == start_sequence[0] else 45
+        payload = payload[start:]
+        payload += ser.read(45 - len(payload))
+
+
 def UNICORNGetData(ser, samples):
     # Set up parameters
     nchan = 16
 
     # UNICORN Bluetooth commands
-    start_sequence = [0xC0, 0x00]
-    stop_sequence = [0x0D, 0x0A]
+    start_sequence = bytearray([0xC0, 0x00])
+    stop_sequence = bytearray([0x0D, 0x0A])
 
     data = np.zeros([samples, nchan]).astype(np.float32)
+    last_counter = None
 
     for sample in range(samples):
-        payload = ser.read(45)
+        payload = read_packet(ser, start_sequence, stop_sequence)
         # to check payload conversion, results in pdf
         # % https://github.com/unicorn-bi/Unicorn-Suite-Hybrid-Black/blob/master/Unicorn%20Bluetooth%20Protocol/UnicornBluetoothProtocol.pdf
         # payload = np.array(
         #    [0xC0, 0x00, 0x0F, 0x00, 0x9F, 0xAF, 0x00, 0x9F, 0xD4, 0x00, 0xA0, 0x40, 0x00, 0x9F, 0x43, 0x00, 0x9F, 0x9A,
         #     0x00, 0x9F, 0xE3, 0x00, 0x9F, 0x85, 0x00, 0x9F, 0xBB, 0x2E, 0xF6, 0xE9, 0x02, 0x8D, 0xF2, 0xF3, 0xFF, 0xEF,
         #     0xFF, 0x23, 0x00, 0xB0, 0x00, 0x00, 0x00, 0x0D, 0x0A], dtype=np.uint8)
-        payload = bytearray(payload)
-        if payload[0:2] != bytearray(start_sequence):
-            raise Exception("Invalid packet")
-        if payload[43:45] != bytearray(stop_sequence):
-            raise Exception("Invalid packet")
 
         battery = 100 * (payload[2] & 15) / 15
 
@@ -61,6 +77,10 @@ def UNICORNGetData(ser, samples):
         gyro = gyro_calculation(payload, 33)
 
         counter = payload[39] + payload[40] * 256 + payload[41] * 65536 + payload[42] * 16777216
+        # Lost packets are visible as a jump in the counter
+        if last_counter is not None and counter != last_counter + 1:
+            warnings.warn(f"{counter - last_counter - 1} sample(s) lost before counter {counter}")
+        last_counter = counter
 
         data[sample, :] = np.concatenate([eeg, accel, gyro, [battery], [counter]])
 

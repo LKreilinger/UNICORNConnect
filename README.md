@@ -59,6 +59,8 @@ Both programs return a matrix with one row per sample (250 samples per second) a
 | 15 | Battery level | % |
 | 16 | Sample counter | - |
 
+If a packet is lost or damaged, the programs skip to the next valid packet and show a warning. The lost samples are not filled in, so they are visible as a jump in the sample counter.
+
 ## Disclaimer
 
 This is an independent project. It is not affiliated with, endorsed by, or supported by g.tec medical engineering GmbH. "Unicorn" and "g.tec" are trademarks of their respective owners. The software is provided as is, without warranty, and is not a medical device.
